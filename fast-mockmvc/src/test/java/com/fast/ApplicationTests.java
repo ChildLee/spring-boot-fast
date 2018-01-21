@@ -1,8 +1,11 @@
 package com.fast;
 
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -21,6 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class ApplicationTests {
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     private MockMvc mockMvc;
 
     @Autowired
@@ -29,6 +34,7 @@ public class ApplicationTests {
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+        log.error("初始化{}", "MockMvc");
     }
 
     @Test
