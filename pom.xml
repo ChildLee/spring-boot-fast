@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>fast-mockmvc</module>
+        <module>fast-security</module>
+        <module>fast-jpa</module>
     </modules>
-
 </project>

@@ -5,6 +5,8 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/fast-mockmvc/pom.xml" />
+        <option value="$PROJECT_DIR$/fast-security/pom.xml" />
+        <option value="$PROJECT_DIR$/fast-jpa/pom.xml" />
       </list>
     </option>
   </component>

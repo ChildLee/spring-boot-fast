@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/fast-jpa/fast-jpa.iml" filepath="$PROJECT_DIR$/fast-jpa/fast-jpa.iml" />
       <module fileurl="file://$PROJECT_DIR$/fast-mockmvc/fast-mockmvc.iml" filepath="$PROJECT_DIR$/fast-mockmvc/fast-mockmvc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fast-security/fast-security.iml" filepath="$PROJECT_DIR$/fast-security/fast-security.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-boot-fast.iml" filepath="$PROJECT_DIR$/spring-boot-fast.iml" />
     </modules>
   </component>
