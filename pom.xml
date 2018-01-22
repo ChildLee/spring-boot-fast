@@ -12,5 +12,6 @@
         <module>fast-mockmvc</module>
         <module>fast-security</module>
         <module>fast-jpa</module>
+        <module>fast-jackson</module>
     </modules>
 </project>

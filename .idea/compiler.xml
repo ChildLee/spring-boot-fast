@@ -6,12 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="fast-jackson" />
         <module name="fast-jpa" />
         <module name="fast-mockmvc" />
         <module name="fast-security" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="fast-jackson" target="1.8" />
       <module name="fast-jpa" target="1.8" />
       <module name="fast-mockmvc" target="1.8" />
       <module name="fast-security" target="1.8" />
