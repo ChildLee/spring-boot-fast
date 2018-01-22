@@ -21,7 +21,11 @@ public class ApplicationTests {
 
     private List<SysUser> list;
 
+    private SysUser sysUser;
+
     private Map<String, Object> map;
+
+    private SysUser[] sysUsersArr;
 
     @Before
     public void init() {
@@ -32,7 +36,7 @@ public class ApplicationTests {
         List<SysRole> sysRoles = new ArrayList<>();
         sysRoles.add(role);
 
-        SysUser sysUser = new SysUser();
+        sysUser = new SysUser();
         sysUser.setId((long) 1);
         sysUser.setUsername("root");
         sysUser.setPassword("root");
@@ -44,20 +48,33 @@ public class ApplicationTests {
         map = new HashMap<>();
         map.put("sysUser", sysUser);
         map.put("class", "ClassName");
+
+        sysUsersArr = new SysUser[]{sysUser, sysUser};
     }
 
     @Test
     public void contextLoads() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
+
+        //Obj to JSON
+        String objJson = mapper.writeValueAsString(sysUser);
+        System.out.println("Obj to JSON");
+        System.out.println(objJson);
+
+        //JSON to Obj
+        SysUser jsonObj = mapper.readValue(objJson, SysUser.class);
+        System.out.println("JSON to Obj");
+        System.out.println(sysUser);
+
         //List to JSON
         String listJson = mapper.writeValueAsString(list);
         System.out.println("List to JSON");
         System.out.println(listJson);
 
         //JSON to List
-        List<SysUser> sysUser = mapper.readValue(listJson, List.class);
+        List<SysUser> jsonList = mapper.readValue(listJson, List.class);
         System.out.println("JSON to List");
-        System.out.println(sysUser);
+        System.out.println(jsonList);
 
         //Map to JSON
         String mapJson = mapper.writeValueAsString(map);
@@ -65,9 +82,19 @@ public class ApplicationTests {
         System.out.println(mapJson);
 
         //JSON to Map
-        Map<String, Object> mapObj = mapper.readValue(mapJson, Map.class);
+        Map<String, Object> jsonMap = mapper.readValue(mapJson, Map.class);
         System.out.println("JSON to Map");
-        System.out.println(mapObj);
+        System.out.println(jsonMap);
+
+        //objArray to JSON
+        String objArray = mapper.writeValueAsString(sysUsersArr);
+        System.out.println("objArray to JSON");
+        System.out.println(objArray);
+
+        //JSON to objArray
+        SysUser[] arrayObj = mapper.readValue(objArray, SysUser[].class);
+        System.out.println("JSON to objArray");
+        System.out.println(arrayObj);
     }
 
 }
