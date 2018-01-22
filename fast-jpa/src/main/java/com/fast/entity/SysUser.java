@@ -3,6 +3,7 @@ package com.fast.entity;
 import javax.persistence.*;
 import java.util.List;
 
+//@JsonIgnoreProperties({"roles"})//jackson忽略解析属性
 @Entity
 public class SysUser {
     @Id
@@ -10,8 +11,7 @@ public class SysUser {
     private Long id;
     private String username;
     private String password;
-
-    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE)//默认懒加载
     private List<SysRole> roles;
 
     public Long getId() {

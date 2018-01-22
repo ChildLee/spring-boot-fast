@@ -1,7 +1,7 @@
 package com.fast;
 
 import com.fast.entity.SysUser;
-import com.fast.repository.TextRepository;
+import com.fast.repository.SysUserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,19 +15,15 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ApplicationTests {
+
+    private ObjectMapper mapper = new ObjectMapper();
+
     @Autowired
-    private TextRepository textRepository;
+    private SysUserRepository sysUserRepository;
 
     @Test
     public void contextLoads() throws IOException {
-        List<SysUser> list = textRepository.findAll();
-
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonfromList = mapper.writeValueAsString(list);
-        System.out.println(jsonfromList);
-
-        List<SysUser> stuList2 = mapper.readValue(jsonfromList, List.class);
-        System.out.println(stuList2);
+        List<SysUser> list = sysUserRepository.findAll();
     }
 
 }
