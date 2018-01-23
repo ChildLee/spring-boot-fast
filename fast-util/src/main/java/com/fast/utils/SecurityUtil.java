@@ -1,4 +1,4 @@
-package com.fast.util;
+package com.fast.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +7,9 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * MD5
+ */
 public class SecurityUtil {
     private static final Logger log = LoggerFactory.getLogger(SecurityUtil.class);
 

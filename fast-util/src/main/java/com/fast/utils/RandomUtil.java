@@ -1,7 +1,10 @@
-package com.fast.util;
+package com.fast.utils;
 
 import java.util.Random;
 
+/**
+ * 随机数
+ */
 public class RandomUtil {
 
     private static Random random = new Random();
