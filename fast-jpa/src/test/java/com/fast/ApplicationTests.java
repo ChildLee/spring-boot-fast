@@ -8,12 +8,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class ApplicationTests {
 
     private ObjectMapper mapper = new ObjectMapper();
@@ -23,7 +24,9 @@ public class ApplicationTests {
 
     @Test
     public void contextLoads() throws IOException {
-        List<SysUser> list = sysUserRepository.findAll();
+        SysUser root = sysUserRepository.findByUsername("root");
+        System.out.println(root);
+        SysUser root1 = sysUserRepository.findByUsernameAndPasswordOrderByPasswordDescIdAsc("root", "root");
+        System.out.println(root1);
     }
-
 }

@@ -3,10 +3,12 @@ package com.fast.controller;
 import com.fast.entity.SysUser;
 import com.fast.repository.SysUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class UserController {
@@ -15,13 +17,9 @@ public class UserController {
     private SysUserRepository sysUserRepository;
 
     @GetMapping("getUserAll")
-    public List<SysUser> getUserAll() {
-        return sysUserRepository.findAll();
-    }
-
-    @GetMapping("getUser")
-    public String getUser() {
-        sysUserRepository.findAll();
-        return "666";
+    public Page<SysUser> getUserAll() {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        Pageable pageable = new PageRequest(1, 1, sort);
+        return sysUserRepository.findAll(pageable);
     }
 }

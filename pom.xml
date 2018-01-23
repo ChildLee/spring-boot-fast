@@ -13,5 +13,6 @@
         <module>fast-security</module>
         <module>fast-jpa</module>
         <module>fast-jackson</module>
+        <module>fast-util</module>
     </modules>
 </project>

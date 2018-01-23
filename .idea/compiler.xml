@@ -10,6 +10,7 @@
         <module name="fast-jpa" />
         <module name="fast-mockmvc" />
         <module name="fast-security" />
+        <module name="fast-util" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -17,6 +18,7 @@
       <module name="fast-jpa" target="1.8" />
       <module name="fast-mockmvc" target="1.8" />
       <module name="fast-security" target="1.8" />
+      <module name="fast-util" target="1.8" />
       <module name="spring-boot-fast" target="1.5" />
     </bytecodeTargetLevel>
   </component>
