@@ -37,17 +37,29 @@ public class ConvertUtil {
      * @return 拼接完返回字符串
      */
     public static String toKeyValue(Map<String, String> params) {
-        List<String> keys = new ArrayList<>(params.keySet());
-        //微信要求按照参数名ASCII字典序排序
-        Collections.sort(keys);
+        Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
         StringBuilder sb = new StringBuilder();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> next = iterator.next();
+            sb.append("&").append(next.getKey()).append("=").append(next.getValue());
+        }
+        return sb.substring(1);
+    }
+
+    /**
+     * 对参数按照key=value的格式，并按照参数名ASCII字典序排序
+     *
+     * @param params 参数集合
+     * @return 拼接完返回字符串
+     */
+    public static String toKeyValueSort(Map<String, String> params) {
+        StringBuilder sb = new StringBuilder();
+        List<String> keys = new ArrayList<>(params.keySet());
+        Collections.sort(keys);
         Iterator<String> iterator = keys.iterator();
         while (iterator.hasNext()) {
             String key = iterator.next();
             String value = params.get(key);
-            if (isNull(value)) {
-                continue;
-            }
             sb.append("&").append(key).append("=").append(value);
         }
         return sb.substring(1);
@@ -62,8 +74,10 @@ public class ConvertUtil {
     public static String toXML(Map<String, String> params) {
         Document document = DocumentHelper.createDocument();
         Element xml = document.addElement("xml");
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            xml.addElement(entry.getKey()).addCDATA(entry.getValue());
+        Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> next = iterator.next();
+            xml.addElement(next.getKey()).addCDATA(next.getValue());
         }
         return document.getRootElement().asXML();
     }

@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Map;
 
 import static com.fast.utils.StringUtil.isNull;
 
@@ -22,51 +23,6 @@ public class WebUtil {
 
     public final static String APPLICATION_JSON = "application/json";
     public final static String APPLICATION_FORM_URLENCODED = "application/x-www-form-urlencoded";
-
-    /**
-     * POST访问url并获取数据
-     *
-     * @param url 访问的链接
-     * @return 字符串结果
-     */
-    public static String sendGet(String url) {
-        return sendGet(url, null);
-    }
-
-    /**
-     * POST访问url并获取数据
-     *
-     * @param url   访问的链接
-     * @param param key=value格式的字符串
-     * @return 字符串结果
-     */
-    public static String sendGet(String url, String param) {
-        BufferedReader br = null;
-        StringBuilder sb = null;
-        try {
-            if (!isNull(param)) {
-                url = url.concat("?").concat(param);
-            }
-            URLConnection conn = new URL(url).openConnection();
-            br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            //读取数据
-            String temp;
-            sb = new StringBuilder();
-            while (null != (temp = br.readLine())) {
-                sb.append(temp);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                log.error("发送GET请求时流关闭错误");
-            }
-        }
-        return null;
-    }
-
 
     /**
      * POST默认访问方式
@@ -93,23 +49,45 @@ public class WebUtil {
     /**
      * POST访问,参数为form方式
      *
-     * @param url   访问的链接
-     * @param param 参数
+     * @param url    访问的链接
+     * @param params 参数
      * @return
      */
-    public static String sendFormPost(String url, String param) {
-        return sendPost(url, param, APPLICATION_FORM_URLENCODED);
+    public static String sendFormPost(String url, String params) {
+        return sendPost(url, params, APPLICATION_FORM_URLENCODED);
+    }
+
+    /**
+     * POST访问,参数为form方式
+     *
+     * @param url    访问的链接
+     * @param params 参数
+     * @return
+     */
+    public static String sendFormPost(String url, Map<String, String> params) {
+        return sendPost(url, ConvertUtil.toKeyValue(params), APPLICATION_FORM_URLENCODED);
+    }
+
+    /**
+     * POST访问,参数为form方式
+     *
+     * @param url    访问的链接
+     * @param params 参数
+     * @return
+     */
+    public static String sendFormPostSort(String url, Map<String, String> params) {
+        return sendPost(url, ConvertUtil.toKeyValueSort(params), APPLICATION_FORM_URLENCODED);
     }
 
     /**
      * POST访问url并获取数据
      *
      * @param url         访问的链接
-     * @param param       key=value格式的字符串
+     * @param params      key=value格式的字符串
      * @param contentType 提交方式
      * @return
      */
-    private static String sendPost(String url, String param, String contentType) {
+    private static String sendPost(String url, String params, String contentType) {
         HttpURLConnection conn = null;
         //流
         OutputStream os = null;
@@ -120,26 +98,26 @@ public class WebUtil {
             conn = (HttpURLConnection) new URL(url).openConnection();
             //POST提交设置参数
             conn.setRequestMethod("POST");
-            if (!isNull(param)) {
-                conn.setRequestProperty("Content-Type", contentType);
-            }
-            conn.setRequestProperty("Charset", "UTF-8");
-            conn.setUseCaches(false);  //不允许缓存
-            conn.setConnectTimeout(10000);//连接超时 单位毫秒,10秒
-            conn.setReadTimeout(10000);   //读取超时 单位毫秒,10秒
-
+            conn.setUseCaches(false);  //POST不允许缓存
             //发送POST请求必须设置如下两行
             conn.setDoOutput(true);   //向httpUrlConnection输出
             conn.setDoInput(true);    //从httpUrlConnection读入
 
+            conn.setConnectTimeout(10 * 1000);//连接超时 单位毫秒,10秒
+            conn.setReadTimeout(10 * 1000);   //读取超时 单位毫秒,10秒
+
+            if (!isNull(params)) {
+                conn.setRequestProperty("Content-Type", contentType);
+                conn.setRequestProperty("Charset", "UTF-8");
+            }
             //输出参数
             os = conn.getOutputStream();
-            os.write(param.getBytes("utf-8"));
+            os.write(params.getBytes("UTF-8"));
             os.flush();
 
             //获取接口返回数据
             //关闭br,里面的流会自己关闭
-            br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
             //读取数据
             String temp;
@@ -161,4 +139,38 @@ public class WebUtil {
         return sb.toString();
     }
 
+    public static String sendGet(String url, Map params) {
+        url = url.concat("?").concat(ConvertUtil.toKeyValue(params));
+        return sendGet(url);
+    }
+
+    /**
+     * POST访问url并获取数据
+     *
+     * @param url 访问的链接
+     * @return 字符串结果
+     */
+    public static String sendGet(String url) {
+        BufferedReader br = null;
+        StringBuilder sb = null;
+        try {
+            URLConnection conn = new URL(url).openConnection();
+            br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            //读取数据
+            String temp;
+            sb = new StringBuilder();
+            while (null != (temp = br.readLine())) {
+                sb.append(temp);
+            }
+        } catch (IOException e) {
+            log.error("发送GET请求时出错");
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                log.error("发送GET请求时流关闭错误");
+            }
+        }
+        return sb.toString();
+    }
 }
