@@ -21,7 +21,7 @@ public class SecurityUtil {
      * @param param 转换字符串
      * @return MD5
      */
-    public static String stringToMD5(String param) {
+    public static String MD5(String param) {
         if (param == null) return null;
         char[] chars = new char[32];
         try {
