@@ -1,6 +1,7 @@
 package com.fast.wxpay.service.impl;
 
 import com.fast.utils.*;
+import com.fast.wxpay.config.WxPayConstants;
 import com.fast.wxpay.model.UnifiedOrder;
 import com.fast.wxpay.service.WxPayService;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class WxPayServiceImpl implements WxPayService {
         //params.put("device_info", unifiedOrder.getDevice_info());
         params.put("nonce_str", RandomUtil.getRandomString(32).toUpperCase());
         //params.put("sign", payParams.getSign());
-        //params.put("sign_type", unifiedOrder.getSign_type());
+        params.put("sign_type", WxPayConstants.MD5);
         params.put("body", unifiedOrder.getBody());//商品描述,如:腾讯充值中心-QQ会员充值
         //params.put("detail", unifiedOrder.getDetail());
         //params.put("attach", unifiedOrder.getAttach());
@@ -52,12 +53,10 @@ public class WxPayServiceImpl implements WxPayService {
         //参数转换成xml格式
         String xml = ConvertUtil.toXML(params);
         //访问微信支付接口发送数据并接受结果
-        String result = WebUtil.sendPost("", xml);
+        String result = WebUtil.sendPost(WxPayConstants.UNIFIEDORDER_URL, xml);
         //将获取的xml格式结果转换成map键值对
         Map<String, String> map = ConvertUtil.xmlToMap(result);
 
         return map;
     }
-
-
 }
