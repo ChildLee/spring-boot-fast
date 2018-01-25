@@ -11,7 +11,7 @@ public class SysUser {
     private Long id;
     private String username;
     private String password;
-    @ManyToMany(cascade = CascadeType.MERGE)//默认懒加载
+    @ManyToMany(cascade = CascadeType.REFRESH)//默认懒加载
     private List<SysRole> roles;
 
     public Long getId() {

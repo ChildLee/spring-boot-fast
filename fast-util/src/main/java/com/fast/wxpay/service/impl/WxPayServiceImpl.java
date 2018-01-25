@@ -14,7 +14,12 @@ import java.util.Map;
 public class WxPayServiceImpl implements WxPayService {
     @Override
     public String getOpenId() {
-        return null;
+        HashMap<String, String> map = new HashMap<>();
+        map.put("appid", "");
+        map.put("secret", "");
+        map.put("js_code", "");
+        map.put("grant_type", "authorization_code");
+        return WebUtil.sendGet(WxPayConstants.JSCODE2SESSION_URL, map);
     }
 
     @Override
@@ -45,9 +50,10 @@ public class WxPayServiceImpl implements WxPayService {
         //ConvertUtil.removeNullValue(params);//除去集合中的空值
 
         String keyValue = ConvertUtil.toKeyValueSort(params);
-
+        //将商户密钥拼接
+        keyValue = keyValue.concat("&key=").concat("key");
         //MD5运算生成签名，这里是第一次签名，用于调用统一下单接口
-        String sign = SecurityUtil.MD5(keyValue.concat("&key=").concat("key")).toUpperCase();
+        String sign = SecurityUtil.MD5(keyValue).toUpperCase();
         //将签名后的字符串放入集合
         params.put("sign", sign);
         //参数转换成xml格式
@@ -55,8 +61,6 @@ public class WxPayServiceImpl implements WxPayService {
         //访问微信支付接口发送数据并接受结果
         String result = WebUtil.sendPost(WxPayConstants.UNIFIEDORDER_URL, xml);
         //将获取的xml格式结果转换成map键值对
-        Map<String, String> map = ConvertUtil.xmlToMap(result);
-
-        return map;
+        return ConvertUtil.xmlToMap(result);
     }
 }
