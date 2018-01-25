@@ -16,6 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -42,5 +44,17 @@ public class DefaultRepositoryTests {
         Page<SysUser> page = textRepository.findAll(pageable);
         String s = mapper.writeValueAsString(page);
         System.out.println(s);
+    }
+
+    @Test
+    public void getAllBy() {
+        List<SysUser> all = textRepository.getAllBy();
+        System.out.println(all);
+    }
+
+    @Test
+    public void getAll() {
+        List<SysUser> all = textRepository.getUsername();
+        System.out.println(all);
     }
 }
