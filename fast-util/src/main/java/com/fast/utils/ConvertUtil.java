@@ -13,7 +13,7 @@ import static com.fast.utils.StringUtil.isNull;
 
 public class ConvertUtil {
 
-    private final static Logger log = LoggerFactory.getLogger(ConvertUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(ConvertUtil.class);
 
     /**
      * 除去Map集合中的空值
