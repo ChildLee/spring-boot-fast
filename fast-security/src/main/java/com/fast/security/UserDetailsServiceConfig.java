@@ -1,5 +1,6 @@
 package com.fast.security;
 
+import com.fast.model.SysUser;
 import com.fast.repository.SysUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,10 @@ public class UserDetailsServiceConfig implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return sysUserRepository.getByUsername(username);
+        SysUser user = sysUserRepository.getByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("用户名不存在");
+        }
+        return user;
     }
 }

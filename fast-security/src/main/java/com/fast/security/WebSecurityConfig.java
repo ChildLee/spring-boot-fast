@@ -41,13 +41,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/public/*").permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers("/admin/*").hasRole("ADMIN")
                 .anyRequest().authenticated()
-                .and()
-                .formLogin().loginProcessingUrl("/login").permitAll()
-//                .loginPage("/login.jsp")
-                .and().rememberMe().tokenRepository(persistentTokenRepository())
-                .and()
-                .logout();
+                .and().formLogin().loginProcessingUrl("/login").permitAll()
+                .and().rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(604800)
+                .and().logout();
     }
 }
