@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -33,13 +34,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected UserDetailsService userDetailsService() {
+        return userDetailsServiceConfig;
+    }
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 //自定义密码验证
-                .authenticationProvider(authenticationProviderConfig)
-                //token验证需要UserDetailsService
-                .userDetailsService(userDetailsServiceConfig);
+                .authenticationProvider(authenticationProviderConfig);
     }
 
     @Override
@@ -47,7 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .anyRequest().authenticated()
                 .and().formLogin().permitAll()
-                .and().rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(60)
+                //有效期内登陆会刷新数据库最后登录时间,并且过期时间重新计算
+                .and().rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(60 * 60 * 24 * 7)
                 .and().logout();
         //关闭csrf,使logout能使用get方式退出
         http.csrf().disable();

@@ -25,6 +25,9 @@ public class AuthenticationProviderConfig implements AuthenticationProvider {
         String username = authentication.getName();
         //获取前端输入的密码
         String password = authentication.getCredentials().toString();
+        if ("".equals(username.trim()) || "".equals(password.trim())) {
+            throw new BadCredentialsException("用户名或密码为空");
+        }
         //数据库查询用户信息
         UserDetails user = userDetailsServiceConfig.loadUserByUsername(username);
         //判断密码
