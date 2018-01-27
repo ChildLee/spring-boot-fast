@@ -20,9 +20,6 @@ public class AuthenticationProviderConfig implements AuthenticationProvider {
     private DataSource dataSource;
 
     @Autowired
-    JdbcTokenRepository repository;
-
-    @Autowired
     private UserDetailsServiceConfig userDetailsServiceConfig;
 
     @Override
@@ -41,15 +38,18 @@ public class AuthenticationProviderConfig implements AuthenticationProvider {
             throw new BadCredentialsException("用户名或密码错误");
         }
 
-        repository.setDataSource(dataSource);
-        Long count = repository.queryTokenCount(username);
-        System.out.println(count);
+//        repository.setDataSource(dataSource);
+//        repository.removeUserTokens(username);
+//        Long count = repository.queryTokenCount(username);
+//        System.out.println(count);
 
         return new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
+        //返回true就会执行authenticate验证
+        //返回false跳过该验证
         return true;
     }
 }

@@ -1,9 +1,8 @@
 package com.fast.security;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 
-@Configuration
+
 public class JdbcTokenRepository extends JdbcTokenRepositoryImpl {
 
     public Long queryTokenCount(String username) {
@@ -11,4 +10,5 @@ public class JdbcTokenRepository extends JdbcTokenRepositoryImpl {
         Object[] object = {username};
         return getJdbcTemplate().queryForObject(sql, object, Long.class);
     }
+
 }
