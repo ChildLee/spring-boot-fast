@@ -4,6 +4,7 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,8 +23,16 @@ public class AuthenticationProviderConfig implements AuthenticationProvider {
     @Autowired
     private UserDetailsServiceConfig userDetailsServiceConfig;
 
+    @Bean
+    JdbcTokenRepository repository() {
+        JdbcTokenRepository repository = new JdbcTokenRepository();
+        repository.setDataSource(dataSource);
+        return repository;
+    }
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        System.out.println("验证密码");
         //获取前端输入的用户名
         String username = authentication.getName();
         //获取前端输入的密码
@@ -37,12 +46,12 @@ public class AuthenticationProviderConfig implements AuthenticationProvider {
         if (!password.equals(user.getPassword())) {
             throw new BadCredentialsException("用户名或密码错误");
         }
-
-//        repository.setDataSource(dataSource);
-//        repository.removeUserTokens(username);
-//        Long count = repository.queryTokenCount(username);
-//        System.out.println(count);
-
+        int count = repository().queryTokenCount(username);
+        System.out.println(count);
+        if (count >= 3) {
+            //登录时查询token超过3个就清空之前的token
+            repository().removeUserTokens(username);
+        }
         return new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
     }
 
