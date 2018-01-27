@@ -1,5 +1,6 @@
 package com.fast.security;
 
+import org.apache.tomcat.jdbc.pool.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class AuthenticationProviderConfig implements AuthenticationProvider {
     private static final Logger log = LoggerFactory.getLogger(AuthenticationProviderConfig.class);
 
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    JdbcTokenRepository repository;
 
     @Autowired
     private UserDetailsServiceConfig userDetailsServiceConfig;
@@ -34,6 +40,11 @@ public class AuthenticationProviderConfig implements AuthenticationProvider {
         if (!password.equals(user.getPassword())) {
             throw new BadCredentialsException("用户名或密码错误");
         }
+
+        repository.setDataSource(dataSource);
+        Long count = repository.queryTokenCount(username);
+        System.out.println(count);
+
         return new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
     }
 
