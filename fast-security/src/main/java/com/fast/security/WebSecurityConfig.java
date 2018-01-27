@@ -62,10 +62,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .anyRequest().authenticated()
+                .and().formLogin().permitAll()
                 .and().addFilterBefore(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .formLogin().permitAll()
                 //有效期内登陆会刷新数据库最后登录时间,并且过期时间重新计算
-                .and().rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(60 * 60 * 24 * 7)
+                .rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(60 * 60 * 24 * 7)
                 .and().logout();
         //关闭csrf,使logout能使用get方式退出
         http.csrf().disable();
