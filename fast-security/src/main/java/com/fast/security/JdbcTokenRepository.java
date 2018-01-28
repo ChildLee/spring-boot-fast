@@ -2,6 +2,9 @@ package com.fast.security;
 
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 
+/**
+ * token持久化
+ */
 public class JdbcTokenRepository extends JdbcTokenRepositoryImpl {
 
     public int queryTokenCount(String username) {

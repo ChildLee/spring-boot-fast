@@ -1,6 +1,5 @@
 package com.fast.security;
 
-import com.fast.model.SysUser;
 import com.fast.repository.SysUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+/**
+ * 数据库查询用户
+ */
 @Configuration
 public class UserDetailsServiceConfig implements UserDetailsService {
     private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceConfig.class);
@@ -20,7 +22,7 @@ public class UserDetailsServiceConfig implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("查询数据库");
-        SysUser user = sysUserRepository.getByUsername(username);
+        UserDetails user = sysUserRepository.getByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("用户名不存在");
         }

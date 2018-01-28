@@ -12,7 +12,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+/**
+ * 数据库登录认证
+ */
 @Configuration
 public class AuthenticationProviderConfig implements AuthenticationProvider {
     private static final Logger log = LoggerFactory.getLogger(AuthenticationProviderConfig.class);
@@ -37,21 +41,23 @@ public class AuthenticationProviderConfig implements AuthenticationProvider {
         String username = authentication.getName();
         //获取前端输入的密码
         String password = authentication.getCredentials().toString();
-        if ("".equals(username.trim()) || "".equals(password.trim())) {
+        if ("".equals(username) || "".equals(password)) {
             throw new BadCredentialsException("用户名或密码为空");
         }
         //数据库查询用户信息
         UserDetails user = userDetailsServiceConfig.loadUserByUsername(username);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         //判断密码
-        if (!password.equals(user.getPassword())) {
+        if (!encoder.matches(username, user.getPassword())) {
             throw new BadCredentialsException("用户名或密码错误");
         }
+        //查询token
         int count = repository().queryTokenCount(username);
-        System.out.println(count);
         if (count >= 3) {
-            //登录时查询token超过3个就清空之前的token
-            repository().removeUserTokens(username);
+            //token超过3个就清空token
+//            repository().removeUserTokens(username);
         }
+        System.out.println("登录成功!");
         return new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
     }
 

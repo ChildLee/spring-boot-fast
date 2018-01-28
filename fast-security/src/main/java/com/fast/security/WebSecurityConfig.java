@@ -23,32 +23,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private DataSource dataSource;
 
     @Autowired
-    private UserDetailsServiceConfig userDetailsServiceConfig;
-
-    @Autowired
     private AuthenticationProviderConfig authenticationProviderConfig;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         //Token持久化
-        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepository();
         tokenRepository.setDataSource(dataSource);
         return tokenRepository;
     }
 
-    @Bean
-    public LoginAuthenticationFilter loginAuthenticationFilter() {
-        LoginAuthenticationFilter filter = new LoginAuthenticationFilter();
-        filter.setAuthenticationManager(authenticationManager);
-        return filter;
+    @Override
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
     }
 
     @Override
     protected UserDetailsService userDetailsService() {
-        return userDetailsServiceConfig;
+        return new UserDetailsServiceConfig();
     }
 
     @Override
@@ -59,13 +51,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
+        http.addFilterAt(new AuthenticationFilterConfig(), UsernamePasswordAuthenticationFilter.class);
+        http.authorizeRequests()
                 .anyRequest().authenticated()
                 .and().formLogin().permitAll()
-                .and().addFilterBefore(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 //有效期内登陆会刷新数据库最后登录时间,并且过期时间重新计算
-                .rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(60 * 60 * 24 * 7)
+                .and().rememberMe().tokenRepository(persistentTokenRepository()).tokenValiditySeconds(60 * 60 * 24 * 7)
                 .and().logout();
         //关闭csrf,使logout能使用get方式退出
         http.csrf().disable();
