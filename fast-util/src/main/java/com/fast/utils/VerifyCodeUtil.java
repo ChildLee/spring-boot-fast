@@ -17,7 +17,6 @@ public class VerifyCodeUtil {
 
     private static final String VERIFY_CODES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-
     /**
      * 使用系统默认字符源生成验证码
      *
@@ -25,7 +24,7 @@ public class VerifyCodeUtil {
      * @return
      */
     public static String generateVerifyCode(int verifySize) {
-        return generateVerifyCode(verifySize, VERIFY_CODES);
+        return generateRandomString(verifySize, VERIFY_CODES);
     }
 
     /**
@@ -39,11 +38,22 @@ public class VerifyCodeUtil {
         if (sources == null || sources.length() == 0) {
             sources = VERIFY_CODES;
         }
-        StringBuilder verifyCode = new StringBuilder(verifySize);
-        for (int i = 0; i < verifySize; i++) {
-            verifyCode.append(sources.charAt(random.nextInt(sources.length())));
+        return generateRandomString(verifySize, sources);
+    }
+
+    /**
+     * 生成随机字符串
+     *
+     * @param length  长度
+     * @param sources 字符源
+     * @return 指定长度的随机字符串
+     */
+    private static String generateRandomString(int length, String sources) {
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            sb.append(sources.charAt(random.nextInt(sources.length())));
         }
-        return verifyCode.toString();
+        return sb.toString();
     }
 
     /**
@@ -235,9 +245,7 @@ public class VerifyCodeUtil {
     }
 
     private static void shearY(Graphics g, int w1, int h1, Color color) {
-
         int period = random.nextInt(40) + 10; // 50;
-
         boolean borderGap = true;
         int frames = 20;
         int phase = 7;
@@ -252,9 +260,7 @@ public class VerifyCodeUtil {
                 g.drawLine(i, (int) d, i, 0);
                 g.drawLine(i, (int) d + h1, i, h1);
             }
-
         }
-
     }
 
     public static void main(String[] args) throws IOException {

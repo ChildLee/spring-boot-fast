@@ -14,5 +14,6 @@
         <module>fast-jpa</module>
         <module>fast-jackson</module>
         <module>fast-util</module>
+        <module>fast-file</module>
     </modules>
 </project>
