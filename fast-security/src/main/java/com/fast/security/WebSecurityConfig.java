@@ -35,9 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     AuthenticationFilterConfig authenticationFilterConfig() throws Exception {
-        AuthenticationFilterConfig filterConfig = new AuthenticationFilterConfig();
-        filterConfig.setAuthenticationManager(authenticationManager());
-        return filterConfig;
+        AuthenticationFilterConfig filter = new AuthenticationFilterConfig();
+        filter.setAuthenticationManager(authenticationManager());
+        return filter;
     }
 
     @Override

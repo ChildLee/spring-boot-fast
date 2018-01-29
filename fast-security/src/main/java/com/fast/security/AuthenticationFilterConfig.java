@@ -15,15 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
 public class AuthenticationFilterConfig extends AbstractAuthenticationProcessingFilter {
+
+    private static final String verifyCodeParameter = "verifyCode";
+
     protected AuthenticationFilterConfig() {
         super(new AntPathRequestMatcher("/login", "POST"));
         this.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler("/login?error"));
     }
-
-    private String usernameParameter = "username";
-    private String passwordParameter = "password";
-    private String validateParameter = "validate";
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -34,13 +34,12 @@ public class AuthenticationFilterConfig extends AbstractAuthenticationProcessing
             chain.doFilter(request, response);
             return;
         }
-
         System.out.println("过滤器");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        System.out.println(username);
-        System.out.println(password);
-        if (true) {
+
+        String verifyCode = request.getParameter(verifyCodeParameter);
+        System.out.println(verifyCode);
+
+        if (false) {
             unsuccessfulAuthentication(request, response, new InsufficientAuthenticationException("验证码错误!"));
             return;
         }
@@ -48,7 +47,7 @@ public class AuthenticationFilterConfig extends AbstractAuthenticationProcessing
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         return null;
     }
 }
