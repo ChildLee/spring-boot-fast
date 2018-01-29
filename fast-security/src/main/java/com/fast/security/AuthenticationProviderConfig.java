@@ -37,10 +37,13 @@ public class AuthenticationProviderConfig implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         System.out.println("验证密码");
+
         //获取前端输入的用户名
         String username = authentication.getName();
         //获取前端输入的密码
         String password = authentication.getCredentials().toString();
+        System.out.println(username);
+        System.out.println(password);
         if ("".equals(username) || "".equals(password)) {
             throw new BadCredentialsException("用户名或密码为空");
         }

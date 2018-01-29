@@ -26,11 +26,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationProviderConfig authenticationProviderConfig;
 
     @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
+    PersistentTokenRepository persistentTokenRepository() {
         //Token持久化
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepository();
         tokenRepository.setDataSource(dataSource);
         return tokenRepository;
+    }
+
+    @Bean
+    AuthenticationFilterConfig authenticationFilterConfig() throws Exception {
+        AuthenticationFilterConfig filterConfig = new AuthenticationFilterConfig();
+        filterConfig.setAuthenticationManager(authenticationManager());
+        return filterConfig;
     }
 
     @Override
@@ -51,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterAt(new AuthenticationFilterConfig(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationFilterConfig(), UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
                 .anyRequest().authenticated()
                 .and().formLogin().permitAll()
