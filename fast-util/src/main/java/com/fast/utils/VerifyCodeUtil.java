@@ -12,9 +12,10 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class VerifyCodeUtil {
-    //使用到Algerian字体，系统里没有的话需要安装字体，字体只显示大写，去掉了1,0,i,o几个容易混淆的字符
-    public static final String VERIFY_CODES = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-    private static Random random = new Random();
+
+    private static final Random random = new Random();
+
+    private static final String VERIFY_CODES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 
     /**
@@ -38,11 +39,9 @@ public class VerifyCodeUtil {
         if (sources == null || sources.length() == 0) {
             sources = VERIFY_CODES;
         }
-        int codesLen = sources.length();
-        Random rand = new Random(System.currentTimeMillis());
         StringBuilder verifyCode = new StringBuilder(verifySize);
         for (int i = 0; i < verifySize; i++) {
-            verifyCode.append(sources.charAt(rand.nextInt(codesLen - 1)));
+            verifyCode.append(sources.charAt(random.nextInt(sources.length())));
         }
         return verifyCode.toString();
     }

@@ -16,12 +16,8 @@ public class RandomUtil {
      * @return 一定长度的数字
      */
     public static String getRandomNumber(int length) {
-        String str = "0123456789";
-        StringBuilder sb = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
-            sb.append(str.charAt(random.nextInt(str.length())));
-        }
-        return sb.toString();
+        String sources = "0123456789";
+        return generateRandomString(length, sources);
     }
 
     /**
@@ -31,10 +27,14 @@ public class RandomUtil {
      * @return 一定长度的字符串
      */
     public static String getRandomString(int length) {
-        String str = "abcdefghijklmnopqrstuvwxyz0123456789";
+        String sources = "abcdefghijklmnopqrstuvwxyz0123456789";
+        return generateRandomString(length, sources);
+    }
+
+    public static String generateRandomString(int length, String sources) {
         StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            sb.append(str.charAt(random.nextInt(str.length())));
+            sb.append(sources.charAt(random.nextInt(sources.length())));
         }
         return sb.toString();
     }
