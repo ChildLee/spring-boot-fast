@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/fast-file/fast-file.iml" filepath="$PROJECT_DIR$/fast-file/fast-file.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fast-io/fast-io.iml" filepath="$PROJECT_DIR$/fast-io/fast-io.iml" />
       <module fileurl="file://$PROJECT_DIR$/fast-jackson/fast-jackson.iml" filepath="$PROJECT_DIR$/fast-jackson/fast-jackson.iml" />
       <module fileurl="file://$PROJECT_DIR$/fast-jpa/fast-jpa.iml" filepath="$PROJECT_DIR$/fast-jpa/fast-jpa.iml" />
       <module fileurl="file://$PROJECT_DIR$/fast-mockmvc/fast-mockmvc.iml" filepath="$PROJECT_DIR$/fast-mockmvc/fast-mockmvc.iml" />

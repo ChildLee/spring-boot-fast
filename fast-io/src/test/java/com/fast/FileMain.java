@@ -2,18 +2,47 @@ package com.fast;
 
 import org.junit.Test;
 
-import java.io.File;
+import java.io.*;
 
 
 public class FileMain {
+    @Test
+    public void inputStream() throws IOException {
+        File file = new File("D:/a.txt");
+        InputStream inputStream = new FileInputStream(file);
+        Reader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        String line;
+        StringBuilder sb = new StringBuilder();
+        while (null != (line = bufferedReader.readLine())) {
+            sb.append(line);
+        }
+        bufferedReader.close();
+        System.out.println(sb);
+    }
 
     @Test
-    public void Test1() {
-        //创建FIle实例,
+    public void fileReader() throws IOException {
+        //FileReader构造函数默认实例化FileInputStream字节流
+        FileReader fileReader = new FileReader("D:/a.txt");
+        BufferedReader reader = new BufferedReader(fileReader);
+        String line;
+        StringBuilder sb = new StringBuilder();
+        while (null != (line = reader.readLine())) {
+            sb.append(line);
+        }
+        reader.close();
+        System.out.println(sb);
+    }
+
+    @Test
+    public void fileTest() {
+        //创建FIle实例,表示文件对象
         File file = new File("D:/verifies/text.txt");
         File file1 = new File("D:/verifies/", "text.txt");
         File file2 = new File("D:/verifies/");
         File file3 = new File(file2, "text.txt");
+        //相对路径
         File file4 = new File("/a");
         File file5 = new File("a");
         //返回完整路径

@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.fast</groupId>
-    <artifactId>fast-file</artifactId>
+    <artifactId>fast-io</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>fast-file</name>
+    <name>fast-io</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>

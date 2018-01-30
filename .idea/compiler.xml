@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="fast-file" />
+        <module name="fast-io" />
         <module name="fast-jackson" />
         <module name="fast-jpa" />
         <module name="fast-mockmvc" />
@@ -16,6 +17,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="fast-file" target="1.8" />
+      <module name="fast-io" target="1.8" />
       <module name="fast-jackson" target="1.8" />
       <module name="fast-jpa" target="1.8" />
       <module name="fast-mockmvc" target="1.8" />
