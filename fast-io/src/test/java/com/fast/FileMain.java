@@ -99,11 +99,16 @@ public class FileMain {
         int flag = 0;
         StringBuilder sb = new StringBuilder();
         while ((flag = fileInputStream.read(bytes)) != -1) {
-            outStream.write(bytes);
+            outStream.write(bytes);//输出到内存保存
         }
         byte[] data = outStream.toByteArray(); // 取内存中保存的数据
-        String result = new String(data, "UTF-8");
-        System.out.println(result);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
+        StringBuilder sb1 = new StringBuilder();
+        int result = 0;
+        while ((result = byteArrayInputStream.read(bytes)) != -1) {
+            sb1.append(new String(bytes, 0, result));
+        }
+        System.out.println(sb1);
     }
 
     @Test

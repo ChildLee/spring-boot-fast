@@ -2,13 +2,11 @@ package com.fast.utils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.Random;
 
 public class VerifyCodeUtil {
@@ -93,26 +91,47 @@ public class VerifyCodeUtil {
      *
      * @param w
      * @param h
-     * @param outputFile
+     * @param file
      * @param code
      * @throws IOException
      */
-    public static void outputImage(int w, int h, File outputFile, String code) throws IOException {
-        if (outputFile == null) {
+    public static void outputImage(int w, int h, File file, String code) throws IOException {
+        if (file == null) {
             return;
         }
-        File dir = outputFile.getParentFile();
+        File dir = file.getParentFile();
         if (!dir.exists()) {
             dir.mkdirs();
         }
         try {
-            outputFile.createNewFile();
-            FileOutputStream fos = new FileOutputStream(outputFile);
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
             outputImage(w, h, fos, code);
             fos.close();
         } catch (IOException e) {
             throw e;
         }
+    }
+
+    /**
+     * 随机颜色值
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    private static Color getRandColor(int start, int end) {
+        if (start > 255 || start < 0) start = 255;
+        if (end > 255 || end < 0) end = 255;
+        if (start > end) {
+            int temp = end;
+            end = start;
+            start = temp;
+        }
+        int r = start + random.nextInt(end - start);
+        int g = start + random.nextInt(end - start);
+        int b = start + random.nextInt(end - start);
+        return new Color(r, g, b);
     }
 
     /**
@@ -127,93 +146,60 @@ public class VerifyCodeUtil {
     public static void outputImage(int w, int h, OutputStream os, String code) throws IOException {
         int verifySize = code.length();
         BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        Random rand = new Random();
         Graphics2D g2 = image.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Color[] colors = new Color[5];
-        Color[] colorSpaces = new Color[]{Color.WHITE, Color.CYAN,
-                Color.GRAY, Color.LIGHT_GRAY, Color.MAGENTA, Color.ORANGE,
-                Color.PINK, Color.YELLOW};
-        float[] fractions = new float[colors.length];
-        for (int i = 0; i < colors.length; i++) {
-            colors[i] = colorSpaces[rand.nextInt(colorSpaces.length)];
-            fractions[i] = rand.nextFloat();
-        }
-        Arrays.sort(fractions);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);//使用抗锯齿
 
-        g2.setColor(Color.GRAY);// 设置边框色
+        g2.setColor(Color.GRAY);
         g2.fillRect(0, 0, w, h);
-
+        //边框
         Color c = getRandColor(200, 250);
-        g2.setColor(c);// 设置背景色
+        g2.setColor(c);
         g2.fillRect(0, 2, w, h - 4);
+        //中线
+        g2.setColor(Color.GRAY);
+        g2.fillRect(0, h / 2, w, 4);
 
-        //绘制干扰线
-        Random random = new Random();
-        g2.setColor(getRandColor(160, 200));// 设置线条的颜色
-        for (int i = 0; i < 20; i++) {
-            int x = random.nextInt(w - 1);
-            int y = random.nextInt(h - 1);
-            int xl = random.nextInt(6) + 1;
-            int yl = random.nextInt(12) + 1;
-            g2.drawLine(x, y, x + xl + 40, y + yl + 20);
-        }
+        //随机干扰线
+        g2.setColor(getRandColor(160, 200));
+//        for (int i = 0; i < 100; i++) {
+//            int x = random.nextInt(w);
+//            int y = random.nextInt(h);
+//            int x2 = random.nextInt(w);
+//            int y2 = random.nextInt(h);
+//            g2.drawLine(x, y, x2, y2);
+//        }
 
-        // 添加噪点
-        float yawpRate = 0.05f;// 噪声率
-        int area = (int) (yawpRate * w * h);
-        for (int i = 0; i < area; i++) {
+
+        //随机噪点
+        for (int i = 0; i < 1000; i++) {
             int x = random.nextInt(w);
             int y = random.nextInt(h);
-            int rgb = getRandomIntColor();
-            image.setRGB(x, y, rgb);
+            image.setRGB(x, y, getRGB());
         }
 
-        shear(g2, w, h, c);// 使图片扭曲
-
-        g2.setColor(getRandColor(100, 160));
-        int fontSize = h - 4;
-        Font font = new Font("Algerian", Font.ITALIC, fontSize);
-        g2.setFont(font);
-        char[] chars = code.toCharArray();
-        for (int i = 0; i < verifySize; i++) {
-            AffineTransform affine = new AffineTransform();
-            affine.setToRotation(Math.PI / 4 * rand.nextDouble() * (rand.nextBoolean() ? 1 : -1), (w / verifySize) * i + fontSize / 2, h / 2);
-            g2.setTransform(affine);
-            g2.drawChars(chars, i, 1, ((w - 10) / verifySize) * i + 5, h / 2 + fontSize / 2 - 10);
-        }
-
-        g2.dispose();
+//        shear(g2, w, h, c);// 使图片扭曲
+//
+//        g2.setColor(getRandColor(100, 160));
+//        int fontSize = h - 4;
+//        Font font = new Font("华文彩云", Font.ITALIC, fontSize);
+//        g2.setFont(font);
+//        char[] chars = code.toCharArray();
+//        for (int i = 0; i < verifySize; i++) {
+//            AffineTransform affine = new AffineTransform();
+//            affine.setToRotation(Math.PI / 4 * random.nextDouble() * (random.nextBoolean() ? 1 : -1), (w / verifySize) * i + fontSize / 2, h / 2);
+//            g2.setTransform(affine);
+//            g2.drawChars(chars, i, 1, ((w - 10) / verifySize) * i + 5, h / 2 + fontSize / 2 - 10);
+//        }
+//
+//        g2.dispose();
         ImageIO.write(image, "jpg", os);
     }
 
-    private static Color getRandColor(int fc, int bc) {
-        if (fc > 255)
-            fc = 255;
-        if (bc > 255)
-            bc = 255;
-        int r = fc + random.nextInt(bc - fc);
-        int g = fc + random.nextInt(bc - fc);
-        int b = fc + random.nextInt(bc - fc);
-        return new Color(r, g, b);
-    }
-
-    private static int getRandomIntColor() {
-        int[] rgb = getRandomRgb();
-        int color = 0;
-        for (int c : rgb) {
-            color = color << 8;
-            color = color | c;
-        }
-        return color;
-    }
-
-    private static int[] getRandomRgb() {
-        int[] rgb = new int[3];
-        for (int i = 0; i < 3; i++) {
-            rgb[i] = random.nextInt(255);
-        }
-        return rgb;
+    private static int getRGB() {
+        int r = random.nextInt(256);
+        int g = random.nextInt(256);
+        int b = random.nextInt(256);
+        return ((255 & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
     }
 
     private static void shear(Graphics g, int w1, int h1, Color color) {
@@ -266,7 +252,7 @@ public class VerifyCodeUtil {
     public static void main(String[] args) throws IOException {
         File dir = new File("D:/verifies");
         int w = 200, h = 80;
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             String verifyCode = generateVerifyCode(4);
             File file = new File(dir, verifyCode + ".jpg");
             outputImage(w, h, file, verifyCode);
