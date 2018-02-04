@@ -7,7 +7,7 @@ import java.util.Random;
  */
 public class RandomUtil {
 
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     /**
      * 获取一定长度的随机数字
@@ -31,7 +31,7 @@ public class RandomUtil {
         return generateRandomString(length, sources);
     }
 
-    public static String generateRandomString(int length, String sources) {
+    private static String generateRandomString(int length, String sources) {
         StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             sb.append(sources.charAt(random.nextInt(sources.length())));
