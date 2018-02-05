@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/fast-security/pom.xml" />
         <option value="$PROJECT_DIR$/fast-jpa/pom.xml" />
         <option value="$PROJECT_DIR$/fast-jackson/pom.xml" />
+        <option value="$PROJECT_DIR$/redis/pom.xml" />
       </list>
     </option>
   </component>

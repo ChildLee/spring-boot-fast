@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/fast-jackson" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fast-jpa" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fast-mockmvc" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fast-redis" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fast-security" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fast-util" charset="UTF-8" />
   </component>

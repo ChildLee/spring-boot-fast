@@ -15,5 +15,6 @@
         <module>fast-jackson</module>
         <module>fast-util</module>
         <module>fast-io</module>
+        <module>fast-redis</module>
     </modules>
 </project>
