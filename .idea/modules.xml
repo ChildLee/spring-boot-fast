@@ -6,7 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/fast-jackson/fast-jackson.iml" filepath="$PROJECT_DIR$/fast-jackson/fast-jackson.iml" />
       <module fileurl="file://$PROJECT_DIR$/fast-jpa/fast-jpa.iml" filepath="$PROJECT_DIR$/fast-jpa/fast-jpa.iml" />
       <module fileurl="file://$PROJECT_DIR$/fast-mockmvc/fast-mockmvc.iml" filepath="$PROJECT_DIR$/fast-mockmvc/fast-mockmvc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/fast-redis/redis.iml" filepath="$PROJECT_DIR$/fast-redis/redis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fast-redis/fast-redis.iml" filepath="$PROJECT_DIR$/fast-redis/fast-redis.iml" />
       <module fileurl="file://$PROJECT_DIR$/fast-security/fast-security.iml" filepath="$PROJECT_DIR$/fast-security/fast-security.iml" />
       <module fileurl="file://$PROJECT_DIR$/fast-util/fast-util.iml" filepath="$PROJECT_DIR$/fast-util/fast-util.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-boot-fast.iml" filepath="$PROJECT_DIR$/spring-boot-fast.iml" />
