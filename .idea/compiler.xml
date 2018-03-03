@@ -20,11 +20,11 @@
     <bytecodeTargetLevel>
       <module name="fast-file" target="1.8" />
       <module name="fast-io" target="1.8" />
-      <module name="fast-jackson" target="1.8" />
-      <module name="fast-jpa" target="1.8" />
-      <module name="fast-mockmvc" target="1.8" />
-      <module name="fast-redis" target="1.8" />
-      <module name="fast-security" target="1.8" />
+      <module name="fast-jackson" target="1.5" />
+      <module name="fast-jpa" target="1.5" />
+      <module name="fast-mockmvc" target="1.5" />
+      <module name="fast-redis" target="1.5" />
+      <module name="fast-security" target="1.5" />
       <module name="fast-util" target="1.8" />
       <module name="redis" target="1.8" />
       <module name="spring-boot-fast" target="1.5" />
